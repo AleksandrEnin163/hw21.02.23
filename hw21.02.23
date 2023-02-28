@@ -1,0 +1,49 @@
+// Создаем массив объектов с информацией о лифтах
+const elevators = [
+  { id: 'A', currentFloor: 0, direction: 'stopped', passengers: [] },
+  { id: 'B', currentFloor: 8, direction: 'down', passengers: [] }
+];
+
+// Функция для определения направления движения лифта
+function getDirection(currentFloor, destinationFloor) {
+  if (currentFloor === destinationFloor) {
+    return 'stopped';
+  } else if (currentFloor < destinationFloor) {
+    return 'up';
+  } else {
+    return 'down';
+  }
+}
+
+// Функция для определения расстояния до лифта
+function getDistance(currentFloor, elevator) {
+  return Math.abs(currentFloor - elevator.currentFloor);
+}
+
+// Функция для выбора наиближайшего лифта
+function selectElevator(currentFloor) {
+  let minDistance = Infinity;
+  let selectedElevator = null;
+  
+  for (let elevator of elevators) {
+    // Игнорируем лифты, которые движутся в противоположном направлении
+    if (elevator.direction !== 'stopped' && elevator.direction !== 
+getDirection(elevator.currentFloor, currentFloor)) {
+      continue;
+    }
+    
+    const distance = getDistance(currentFloor, elevator);
+    if (distance < minDistance) {
+      minDistance = distance;
+      selectedElevator = elevator;
+    }
+  }
+  
+  return selectedElevator;
+}
+
+// Пример вызова лифта
+const currentFloor = 1;
+const elevator = selectElevator(currentFloor);
+console.log(`Отправляем лифт ${elevator.id}`);
+
